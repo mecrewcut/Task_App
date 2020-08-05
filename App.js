@@ -13,7 +13,7 @@ export default function App() {
       ...prev,
       {
         id: Date.now().toString(),
-        title
+        title,
       }
     ])
   }
