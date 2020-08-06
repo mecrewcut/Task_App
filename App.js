@@ -7,6 +7,7 @@ import { Tasks } from './src/Tasks.js';
 
 export default function App() {
   const [tasks, setTasks] = useState([])
+  const [search, setSearch] = useState('')
 
   const addTask = title => {
     setTasks(prev => [
@@ -30,16 +31,15 @@ export default function App() {
   const removeTask = id => {
     setTasks(prev => prev.filter(task => task.id !== id))
   }
-
   return (
     <View>
       <View>
-        <Head />
+        <Head search={search} setSearch={setSearch}/>
       </View>
-      <View style={styles.container}>
+      <View style={styles.container}> 
         <AddTask onSubmit={addTask}/>
         <ScrollView>
-            {tasks.map(task => {
+            {tasks.filter(task => task.title.indexOf(search) !== -1).map(task => {
               return <Tasks key={task.id} task={task} onRemove={removeTask} onClickButton={onClickButton} onEdit={onEdit}/>
             })}
         </ScrollView>
