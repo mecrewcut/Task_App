@@ -1,22 +1,39 @@
 import React, {useState} from 'react'
-import {View, Text, StyleSheet, CheckBox} from 'react-native'
+import {View, TextInput, StyleSheet, CheckBox} from 'react-native'
 import { AntDesign } from '@expo/vector-icons'; 
 
-export const Tasks = ({task, onRemove}) => {
-    const [checkBox, setCheckBox] = useState(false)
+export const Tasks = ({task, onRemove, onClickButton, onEdit}) => {
+    const [edit, setEdit] = useState(false)
+    const [textEdit, setTextEdit] = useState(task.title)
     
+    // const ref = React.createRef
+    // const onFocus = () => {
+    //     ref.focus()
+    // }
+
     return (        
         <View style={styles.taskStyle}>
             <View style={styles.boxLeft}>
-                <CheckBox 
-                value={checkBox}
-                onValueChange={(newValue) => setCheckBox(newValue)}
+                <CheckBox
+                    value={task.completed}
+                    onValueChange={() => onClickButton(task.id)}
                 />
-                <Text >
-                    {task.title}
-                </Text>
+                <TextInput 
+                    editable={edit}
+                    // ref={ref}
+                    // style={inputStyle}
+                    value={textEdit}
+                    onChangeText={setTextEdit}
+                />          
             </View>
             <View style={styles.boxRight}>
+                <AntDesign 
+                    name="edit" 
+                    size={24} 
+                    color="black" 
+                    style={styles.edit}
+                    onPress={() => {setEdit(!edit); onEdit(task.id, textEdit)}}
+                />   
                 <AntDesign 
                     style={styles.button} 
                     name="closecircleo" 
@@ -48,5 +65,8 @@ const styles = StyleSheet.create ({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'flex-end'
+    },
+    edit: {
+        marginRight: 10
     }
 })

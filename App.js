@@ -6,7 +6,7 @@ import { AddTask } from './src/AddTask.js';
 import { Tasks } from './src/Tasks.js';
 
 export default function App() {
-  const [tasks, setTasks] =   useState([])
+  const [tasks, setTasks] = useState([])
 
   const addTask = title => {
     setTasks(prev => [
@@ -14,8 +14,17 @@ export default function App() {
       {
         id: Date.now().toString(),
         title,
+        completed: false
       }
     ])
+  }
+  const onClickButton = (id) => {
+    setTasks(prev => prev.map(task => task.id === id ? {id: task.id, title: task.title, completed: !task.completed} : 
+      {id: task.id, title: task.title, completed: task.completed}))
+  } 
+  const onEdit = (id, newTitle) => {
+    setTasks(prev => prev.map(task => task.id === id ? {id: task.id, title: newTitle, completed: task.completed} : 
+      {id: task.id, title: task.title, completed: task.completed}))
   }
 
   const removeTask = id => {
@@ -31,7 +40,7 @@ export default function App() {
         <AddTask onSubmit={addTask}/>
         <ScrollView>
             {tasks.map(task => {
-              return <Tasks key={task.id} task={task} onRemove={removeTask}/>
+              return <Tasks key={task.id} task={task} onRemove={removeTask} onClickButton={onClickButton} onEdit={onEdit}/>
             })}
         </ScrollView>
       </View>
